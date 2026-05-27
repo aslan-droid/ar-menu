@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern WebAR Menü</title>
+    
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fcor/ar-gesture-handler@master/dist/gesture-detector.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fcor/ar-gesture-handler@master/dist/gesture-handler.js"></script>
+    
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Modern Üst Kategori Menüsü */
+        .category-container {
+            position: absolute; top: 15px; left: 0; width: 100%;
+            display: flex; justify-content: center; gap: 8px; z-index: 100;
+        }
+        .category-btn {
+            background: rgba(255, 255, 255, 0.9); border: none; padding: 10px 16px;
+            border-radius: 25px; font-weight: bold; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer; transition: 0.3s; font-size: 13px;
+        }
+        .category-btn.active { background: #e67e22; color: white; }
+
+        /* ÖNERİ A: Aşağıdan Açılan Detay Paneli (Bottom Sheet) */
+        .bottom-sheet {
+            position: absolute; bottom: -100%; left: 0; width: 100%;
+            background: linear-gradient(to top, #ffffff 85%, #f9f9f9 100%);
+            border-top-left-radius: 25px; border-top-right-radius: 25px;
+            padding: 24px; box-sizing: border-box; z-index: 100;
+            transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.15);
+        }
+        .bottom-sheet.open { bottom: 0; }
+        
+        /* Panel İçi Detaylar */
+        .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .food-title { margin: 0; font-size: 22px; color: #2c3e50; font-weight: 700; }
+        .food-price { font-size: 20px; font-weight: bold; color: #e67e22; }
+        .food-info-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .badge { background: #f0f3f4; padding: 4px 10px; border-radius: 12px; font-size: 12px; color: #7f8c8d; font-weight: 600; }
+        .food-description { color: #5d6d7e; font-size: 14px; line-height: 1.5; margin-bottom: 20px; }
+
+        /* ÖNERİ C: Sepete Ekle Butonu */
+        .add-to-cart-btn {
+            width: 100%; background: #2ecc71; color: white; border: none;
+            padding: 15px; border-radius: 15px; font-size: 16px; font-weight: bold;
+            cursor: pointer; box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3); transition: 0.2s;
+        }
+        .add-to-cart-btn:active { transform: scale(0.98); }
+        
+        /* Paneli Kapatma Çizgisi */
+        .close-handle {
+            width: 40px; height: 5px; background: #ccc; border-radius: 3px;
+            margin: -12px auto 15px auto; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="category-container">
+        <button class="category-btn active">Yemekler</button>
+        <button class="category-btn">Atıştırmalıklar</button>
+        <button class="category-btn">Tatlılar</button>
+        <button class="category-btn">İçecekler</button>
+    </div>
+
+    <a-scene 
+        mindar-image="imageTargetSrc: ./menu.mind; filterMinCF:0.001; filterBeta: 0.01;" 
+        color-space="sRGB" 
+        renderer="colorManagement: true, physicallyCorrectLights: true" 
+        vr-mode-ui="enabled: false" 
+        device-orientation-permission-ui="enabled: false"
+        gesture-detector>
+        
+        <a-assets>
+            <a-asset-item id="adanaModel" src="./mustafa_-_adana.glb"></a-asset-item>
+            <a-asset-item id="cigKofteModel" src="./mustafa_-_cig_kofte.glb"></a-asset-item>
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity light="type: ambient; intensity: 0.7;"></a-entity>
+        <a-entity light="type: directional; intensity: 0.6; castShadow: true;" position="1 2 1"></a-entity>
+
+        <a-entity mindar-image-target="targetIndex: 0">
+            
+            <a-gltf-model 
+                id="model-adana"
+                src="#adanaModel" 
+                position="0 0 0" 
+                scale="0.5 0.5 0.5" 
+                rotation="0 0 0"
+                class="clickable" 
+                gesture-handler="minScale: 0.2; maxScale: 2"
+                metadata-name="Adana Kebap"
+                metadata-price="340 TL"
+                metadata-cal="620 kcal"
+                metadata-desc="Zırhta çekilmiş el kıyması, özel pul biber ve baharatlarla harmanlanarak közlenmiş biber ve domates eşliğinde sunulur.">
+            </a-gltf-model>
+
+        </a-entity>
+    </a-scene>
+
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="close-handle" onclick="closePanel()"></div>
+        <div class="sheet-header">
+            <h2 class="food-title" id="foodTitle">Yemek Adı</h2>
+            <span class="food-price" id="foodPrice">00 TL</span>
+        </div>
+        <div class="food-info-row">
+            <span class="badge" id="foodCal">000 kcal</span>
+            <span class="badge">Popüler</span>
+        </div>
+        <p class="food-description" id="foodDesc">Yemek açıklaması buraya gelecek.</p>
+        
+        <button class="add-to-cart-btn" onclick="addToCart()">Siparişe Ekle</button>
+    </div>
+
+    <script>
+        const sheet = document.getElementById('bottomSheet');
+
+        // Model tıklandığında alttan paneli açan fonksiyon
+        document.querySelectorAll('.clickable').forEach(model => {
+            model.addEventListener('click', function () {
+                document.getElementById('foodTitle').innerText = this.getAttribute('metadata-name');
+                document.getElementById('foodPrice').innerText = this.getAttribute('metadata-price');
+                document.getElementById('foodCal').innerText = this.getAttribute('metadata-cal');
+                document.getElementById('foodDesc').innerText = this.getAttribute('metadata-desc');
+                
+                sheet.classList.add('open');
+            });
+        });
+
+        function closePanel() {
+            sheet.classList.remove('open');
+        }
+
+        function addToCart() {
+            alert("Ürün siparişinize eklendi!");
+            closePanel();
+        }
+    </script>
+</body>
+</html>
