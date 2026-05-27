@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>xr MENÜ</title>
+    <title>AR MENÜ</title>
     
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
@@ -89,36 +89,11 @@
 
     <a-scene mindar-image="imageTargetSrc: ./menu.mind; filterMinCF:0.001; filterBeta: 0.01;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
         
-        <a-assets>
-            <a-asset-item id="adanaModel" src="./mustafa_-_adana.glb"></a-asset-item>
-            <a-asset-item id="cigKofteModel" src="./mustafa_-_cig_kofte.glb"></a-asset-item>
-            <a-asset-item id="burgerModel" src="./burger_and_chips.glb"></a-asset-item>
-            <a-asset-item id="pideModel" src="./pide_turkish_pizzakusbaskasar.glb"></a-asset-item>
-            <a-asset-item id="pizzaModel" src="./pizza.glb"></a-asset-item>
-            <a-asset-item id="gozlemeModel" src="./gözleme.glb"></a-asset-item>
-            
-            <a-asset-item id="pringlesModel" src="./pringles_chips_can.glb"></a-asset-item>
-            <a-asset-item id="laysModel" src="./lays_kırmızı.glb"></a-asset-item>
-            <a-asset-item id="chipsModel" src="./chips_mavi.glb"></a-asset-item>
-            
-            <a-asset-item id="baklavaModel" src="./baklava_ince_tablak.glb"></a-asset-item>
-            <a-asset-item id="cookiesModel" src="./cookies.glb"></a-asset-item>
-            <a-asset-item id="pancakeModel" src="./dessert_for_breakfast.glb"></a-asset-item>
-            <a-asset-item id="iceCreamModel" src="./ice_cream.glb"></a-asset-item>
-
-            <a-asset-item id="ayranModel" src="./ayran_turkish_drink_game_asset.glb"></a-asset-item>
-            <a-asset-item id="kahveModel" src="./turkish_coffee.glb"></a-asset-item>
-            <a-asset-item id="teaModel" src="./glass_tea.glb"></a-asset-item>
-            <a-asset-item id="cappuccinoModel" src="./cup_of_cappuccino.glb"></a-asset-item>
-            <a-asset-item id="iceCoffeeModel" src="./ice_coffee.glb"></a-asset-item>
-            <a-asset-item id="colaModel" src="./coca_cola_bottle_glass.glb"></a-asset-item>
-            <a-asset-item id="sodaModel" src="./soda_can_kutu.glb"></a-asset-item>
-            <a-asset-item id="waterModel" src="./water_bottle.glb"></a-asset-item>
-        </a-assets>
+        <a-assets></a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        <a-entity light="type: ambient; intensity: 0.9;"></a-entity>
-        <a-entity light="type: directional; intensity: 0.8;" position="1 3 2"></a-entity>
+        <a-entity light="type: ambient; intensity: 1.0;"></a-entity>
+        <a-entity light="type: directional; intensity: 0.8;" position="1 4 2"></a-entity>
 
         <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
             
@@ -143,35 +118,37 @@
     </div>
 
     <script>
+        // FOTOĞRAFLARA GÖRE TAMAMEN OPTİMİZE EDİLMİŞ 21 MODEL AYARI
+        // rotX: 20 ile tabakların altının görünmesi engellendi, üstten iştah açıcı bakış sağlandı 🌟
         const allModels = [
             // --- YEMEKLER ---
-            { file: "mustafa_-_adana.glb", cat: "yemekler", name: "Zırh Adana Kebap", price: "340 TL", cal: "620 kcal", desc: "Zırhta çekilmiş hakiki kuzu kıyması, közlenmiş biber ve domatesle.", scale: 0.6, rotY: 0, posY: -0.1 },
-            { file: "mustafa_-_cig_kofte.glb", cat: "yemekler", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 4.5, rotY: 0, posY: -0.1 },
-            { file: "burger_and_chips.glb", cat: "yemekler", name: "Gurme Burger & Patates", price: "260 TL", cal: "750 kcal", desc: "150gr dana köfte, çıtır patates kızartması ve özel sos eşliğinde.", scale: 0.3, rotY: 0, posY: 0 },
-            { file: "pide_turkish_pizzakusbaskasar.glb", cat: "yemekler", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri.", scale: 0.5, rotY: 0, posY: -0.1 },
-            { file: "pizza.glb", cat: "yemekler", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ve mısır taneleriyle İtalyan usulü.", scale: 0.4, rotY: 0, posY: -0.1 },
-            { file: "gözleme.glb", cat: "yemekler", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme.", scale: 0.5, rotY: 0, posY: -0.1 },
+            { file: "mustafa_-_adana.glb", cat: "yemekler", name: "Zırh Adana Kebap", price: "340 TL", cal: "620 kcal", desc: "Zırhta çekilmiş hakiki kuzu kıyması, közlenmiş biber ve domatesle.", scale: 1.8, rotX: 20, rotY: 0, posY: -0.2 },
+            { file: "mustafa_-_cig_kofte.glb", cat: "yemekler", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 5.5, rotX: 20, rotY: 0, posY: -0.2 },
+            { file: "burger_and_chips.glb", cat: "yemekler", name: "Gurme Burger & Patates", price: "260 TL", cal: "750 kcal", desc: "150gr dana köfte, çıtır patates kızartması ve özel sos eşliğinde.", scale: 0.08, rotX: 10, rotY: 0, posY: -0.1 }, // Dev gibiydi, küçültüldü
+            { file: "pide_turkish_pizzakusbaskasar.glb", cat: "yemekler", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri.", scale: 1.8, rotX: 25, rotY: 90, posY: -0.2 }, // Çizgi gibi görünüyordu, büyütülüp eğildi
+            { file: "pizza.glb", cat: "yemekler", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ve mısır taneleriyle İtalyan usulü.", scale: 1.4, rotX: 25, rotY: 0, posY: -0.2 }, // Çok küçüktü, büyütüldü
+            { file: "gözleme.glb", cat: "yemekler", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme.", scale: 1.5, rotX: 20, rotY: 0, posY: -0.2 },
             
             // --- ATİŞTIRMALIKLAR ---
-            { file: "pringles_chips_can.glb", cat: "atıştırmalıklar", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 0.6, rotY: 180, posY: 0 },
-            { file: "lays_kırmızı.glb", cat: "atıştırmalıklar", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi.", scale: 0.5, rotY: 0, posY: 0 },
-            { file: "chips_mavi.glb", cat: "atıştırmalıklar", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 0.5, rotY: 0, posY: 0 },
+            { file: "pringles_chips_can.glb", cat: "atıştırmalıklar", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 1.6, rotX: 5, rotY: 180, posY: -0.1 }, // Çok küçüktü, büyütüldü
+            { file: "lays_kırmızı.glb", cat: "atıştırmalıklar", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi.", scale: 0.04, rotX: 15, rotY: 0, posY: -0.1 }, // Ekranı kaplıyordu, ideal boyuta küçültüldü
+            { file: "chips_mavi.glb", cat: "atıştırmalıklar", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 0.04, rotX: 15, rotY: 0, posY: -0.1 }, // Görünmüyordu, optimize edildi
             
             // --- TATLILAR ---
-            { file: "baklava_ince_tablak.glb", cat: "tatlılar", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 0.3, rotY: 0, posY: -0.1 },
-            { file: "cookies.glb", cat: "tatlılar", name: "Çikolatalı Ev Kurabiyesi", price: "95 TL", cal: "320 kcal", desc: "Fırından yeni çıkmış, içi yumuşak parça çikolatalı kurabiyeler.", scale: 0.4, rotY: 0, posY: 0 },
-            { file: "dessert_for_breakfast.glb", cat: "tatlılar", name: "Meyveli Pancake Kulesi", price: "180 TL", cal: "510 kcal", desc: "Akçaağaç şurubu, çilek ve yaban mersini ile tatlandırılmış pancake.", scale: 0.3, rotY: 0, posY: -0.1 },
-            { file: "ice_cream.glb", cat: "tatlılar", name: "Meyveli İtalyan Dondurması", price: "110 TL", cal: "210 kcal", desc: "Doğal meyve özleriyle hazırlanmış serinletici el yapımı dondurma.", scale: 0.4, rotY: 0, posY: 0 },
+            { file: "baklava_ince_tablak.glb", cat: "tatlılar", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 0.8, rotX: 20, rotY: 0, posY: -0.2 },
+            { file: "cookies.glb", cat: "tatlılar", name: "Çikolatalı Ev Kurabiyesi", price: "95 TL", cal: "320 kcal", desc: "Fırından yeni çıkmış, içi yumuşak parça çikolatalı kurabiyeler.", scale: 1.2, rotX: 15, rotY: 0, posY: -0.1 },
+            { file: "dessert_for_breakfast.glb", cat: "tatlılar", name: "Meyveli Pancake Kulesi", price: "180 TL", cal: "510 kcal", desc: "Akçaağaç şurubu, çilek ve yaban mersini ile tatlandırılmış pancake.", scale: 0.8, rotX: 15, rotY: 0, posY: -0.1 },
+            { file: "ice_cream.glb", cat: "tatlılar", name: "Meyveli İtalyan Dondurması", price: "110 TL", cal: "210 kcal", desc: "Doğal meyve özleriyle hazırlanmış serinletici el yapımı dondurma.", scale: 0.35, rotX: 10, rotY: 0, posY: -0.1 },
 
             // --- İÇECEKLER ---
-            { file: "ayran_turkish_drink_game_asset.glb", cat: "içecekler", name: "Köpüklü Yayık Ayranı", price: "45 TL", cal: "80 kcal", desc: "Doğal yoğurttan yapılmış, buz gibi ferahlatıcı tuzlu yayık ayranı.", scale: 0.15, rotY: 0, posY: 0 },
-            { file: "turkish_coffee.glb", cat: "içecekler", name: "Okkalı Türk Kahvesi", price: "60 TL", cal: "5 kcal", desc: "Cezvede ağır ağır pişmiş, yanında lokumuyla bol köpüklü.", scale: 0.4, rotY: 0, posY: 0 },
-            { file: "glass_tea.glb", cat: "içecekler", name: "İnce Belli Türk Çayı", price: "30 TL", cal: "0 kcal", desc: "Tavşan kanı renginde, taze demlenmiş sıcacık Türk çayı.", scale: 0.4, rotY: 0, posY: 0 },
-            { file: "cup_of_cappuccino.glb", cat: "içecekler", name: "Köpüklü Cappuccino", price: "85 TL", cal: "120 kcal", desc: "Zengin espresso lezzeti ve kadife kıvamında sıcak süt köpüğü.", scale: 0.4, rotY: 0, posY: 0 },
-            { file: "ice_coffee.glb", cat: "içecekler", name: "Buzlu Karamel Latte", price: "90 TL", cal: "110 kcal", desc: "Soğuk espresso, süt ve karamel şurubunun buzla mükemmel uyumu.", scale: 0.4, rotY: 0, posY: 0 },
-            { file: "coca_cola_bottle_glass.glb", cat: "içecekler", name: "Coca-Cola (Cam Şişe)", price: "55 TL", cal: "140 kcal", desc: "Buz gibi klasik orijinal tat orijinal cam şişesinde.", scale: 0.35, rotY: 0, posY: 0 },
-            { file: "soda_can_kutu.glb", cat: "içecekler", name: "Kutu Çilekli Soda", price: "40 TL", cal: "90 kcal", desc: "Ferahlatıcı, meyve aromalı soğuk kutu maden suyu.", scale: 0.35, rotY: 0, posY: 0 },
-            { file: "water_bottle.glb", cat: "içecekler", name: "Doğal Kaynak Suyu", price: "20 TL", cal: "0 kcal", desc: "Serinletici, berrak ve sağlıklı pet şişe doğal kaynak suyu.", scale: 0.35, rotY: 0, posY: 0 }
+            { file: "ayran_turkish_drink_game_asset.glb", cat: "içecekler", name: "Köpüklü Yayık Ayranı", price: "45 TL", cal: "80 kcal", desc: "Doğal yoğurttan yapılmış, buz gibi ferahlatıcı tuzlu yayık ayranı.", scale: 0.15, rotX: 0, rotY: 0, posY: -0.1 },
+            { file: "turkish_coffee.glb", cat: "içecekler", name: "Okkalı Türk Kahvesi", price: "60 TL", cal: "5 kcal", desc: "Cezvede ağır ağır pişmiş, yanında lokumuyla bol köpüklü.", scale: 1.2, rotX: 10, rotY: 0, posY: -0.1 }, // Nokta kadardı, büyütüldü
+            { file: "glass_tea.glb", cat: "içecekler", name: "İnce Belli Türk Çayı", price: "30 TL", cal: "0 kcal", desc: "Tavşan kanı renginde, taze demlenmiş sıcacık Türk çayı.", scale: 0.05, rotX: 10, rotY: 0, posY: -0.1 }, // Devasaydı, küçültüldü
+            { file: "cup_of_cappuccino.glb", cat: "içecekler", name: "Köpüklü Cappuccino", price: "85 TL", cal: "120 kcal", desc: "Zengin espresso lezzeti ve kadife kıvamında sıcak süt köpüğü.", scale: 1.2, rotX: 10, rotY: 0, posY: -0.1 }, // Büyütüldü
+            { file: "ice_coffee.glb", cat: "içecekler", name: "Buzlu Karamel Latte", price: "90 TL", cal: "110 kcal", desc: "Soğuk espresso, süt ve karamel şurubunun buzla mükemmel uyumu.", scale: 1.2, rotX: 10, rotY: 0, posY: -0.1 }, // Büyütüldü
+            { file: "coca_cola_bottle_glass.glb", cat: "içecekler", name: "Coca-Cola (Cam Şişe)", price: "55 TL", cal: "140 kcal", desc: "Buz gibi klasik orijinal tat orijinal cam şişesinde.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 }, // Büyütüldü
+            { file: "soda_can_kutu.glb", cat: "içecekler", name: "Kutu Çilekli Soda", price: "40 TL", cal: "90 kcal", desc: "Ferahlatıcı, meyve aromalı soğuk kutu maden suyu.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 }, // Büyütüldü
+            { file: "water_bottle.glb", cat: "içecekler", name: "Doğal Kaynak Suyu", price: "20 TL", cal: "0 kcal", desc: "Serinletici, berrak ve sağlıklı pet şişe doğal kaynak suyu.", scale: 0.15, rotX: 0, rotY: 0, posY: -0.1 } // Dengelendi
         ];
 
         let currentCategory = "yemekler";
@@ -190,7 +167,6 @@
         let startAngle = null;
         let isDragging = false;
 
-        // Sayfa ilk yüklendiğinde verileri dondurmadan hemen çalıştır (Güvenli Altyapı 🌟)
         window.addEventListener('DOMContentLoaded', () => {
             updateFilter();
         });
@@ -237,7 +213,8 @@
                 mainModel.setAttribute('scale', `${current.scale} ${current.scale} ${current.scale}`);
                 mainModel.setAttribute('position', `0 ${current.posY} 0`);
                 localRotY = current.rotY;
-                mainModel.setAttribute('rotation', `0 ${localRotY} 0`);
+                // X eksenine özgün eğim veriliyor (Alt kısmın görünmesi engellendi)
+                mainModel.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
             }
 
             document.getElementById('foodTitle').innerText = current.name;
@@ -246,7 +223,7 @@
             document.getElementById('foodDesc').innerText = current.desc;
         }
 
-        // HAREKET VE DOKUNMATİK SİSTEMİ (Yazım hataları tamamen temizlendi 🌟)
+        // HAREKET VE DOKUNMATİK SİSTEMİ
         window.addEventListener('touchstart', function(e) {
             if (e.touches.length === 1) {
                 isDragging = true;
@@ -261,6 +238,7 @@
 
         window.addEventListener('touchmove', function(e) {
             if (!wrapper || !mainModel) return;
+            const current = filteredModels[activeIndex];
 
             if (e.touches.length === 1 && isDragging) {
                 let deltaX = e.touches[0].clientX - startTouchX;
@@ -292,7 +270,7 @@
                     let angleDiff = currentAngle - startAngle;
                     
                     localRotY += angleDiff * (180 / Math.PI) * 0.4; 
-                    mainModel.setAttribute('rotation', `0 ${localRotY} 0`);
+                    mainModel.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
                     startAngle = currentAngle;
                 }
             }
