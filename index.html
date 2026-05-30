@@ -30,6 +30,13 @@
         }
         .category-btn.active { background: #e67e22; color: white; border-color: #e67e22; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.5); }
 
+        /* SEPET BUTONU */
+        .cart-icon-btn {
+            position: absolute; top: 15px; right: 15px; background: #2ecc71; color: white;
+            border: none; padding: 10px 15px; border-radius: 20px; font-weight: bold;
+            z-index: 1001; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 12px;
+        }
+
         /* SAĞ VE SOL İLERİ/GERİ OK BUTONLARI */
         .nav-arrow {
             position: absolute; top: 45%; transform: translateY(-50%);
@@ -42,14 +49,13 @@
         .nav-arrow.left { left: 15px; }
         .nav-arrow.right { right: 15px; }
 
-        /* MODEL BİLGİSİ İPUCU */
         .model-counter {
             position: absolute; top: 115px; left: 50%; transform: translateX(-50%);
             background: rgba(0,0,0,0.7); color: #fff; padding: 5px 15px; border-radius: 15px;
             font-size: 12px; font-weight: 600; z-index: 990; pointer-events: none;
         }
 
-        /* DETAY PANELİ (BOTTOM SHEET) */
+        /* DETAY PANELİ */
         .bottom-sheet {
             position: absolute; bottom: 0; left: 0; width: 100%;
             background: white; border-top-left-radius: 25px; border-top-right-radius: 25px;
@@ -64,12 +70,27 @@
         .food-description { color: #5d6d7e; font-size: 13px; line-height: 1.4; margin: 0 0 15px 0; height: 38px; overflow-y: auto; }
         .add-to-cart-btn {
             width: 100%; background: #2ecc71; color: white; border: none; padding: 14px;
-            border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(46,204,113,0.2);
+            border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer;
         }
+
+        /* SEPET DETAY MODAL PANELİ */
+        .cart-modal {
+            position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.98); z-index: 2000; transition: top 0.4s ease;
+            padding: 30px 20px; box-sizing: border-box; display: flex; flex-direction: column;
+        }
+        .cart-modal.open { top: 0; }
+        .cart-items-list { flex: 1; overflow-y: auto; margin-top: 20px; }
+        .cart-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 16px; }
+        .cart-total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin: 20px 0; color: #2c3e50; border-top: 2px solid #333; padding-top: 15px; }
+        .close-cart-btn { background: #e74c3c; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; }
+
         .arjs-loader { display: none !important; }
     </style>
 </head>
 <body>
+
+    <button class="cart-icon-btn" onclick="toggleCartModal()">Sepetim (0)</button>
 
     <div class="ui-header">
         <h1 class="site-title">AR MENÜ</h1>
@@ -111,35 +132,48 @@
             <span class="badge" style="background:#e67e22; color:white;">Dokun & Sürükle</span>
         </div>
         <p class="food-description" id="foodDesc">Lütfen bekleyin...</p>
-        <button class="add-to-cart-btn" onclick="addToCart()">Siparişe Ekle</button>
+        <button class="add-to-cart-btn" onclick="addItemToCart()">Siparişe Ekle</button>
+    </div>
+
+    <div class="cart-modal" id="cartModal">
+        <h2 style="margin: 0; color: #2c3e50; border-bottom: 2px solid #2ecc71; padding-bottom: 10px;">Sipariş Sepetiniz</h2>
+        <div class="cart-items-list" id="cartItemsList">
+            <p style="color: #7f8c8d; text-align: center; margin-top: 40px;">Sepetiniz henüz boş.</p>
+        </div>
+        <div class="cart-total-row">
+            <span>Toplam Tutar:</span>
+            <span id="cartTotalTax">0 TL</span>
+        </div>
+        <button class="close-cart-btn" onclick="toggleCartModal()">Kapat ve Menüye Dön</button>
     </div>
 
     <script>
-        // İSTEKLERİNE GÖRE TAMAMEN GÜNCELLENEN VE TEMİZLENEN VERİ LİSTESİ
+        // TEMİZLENMİŞ VE HATALARI DÜZELTİLMİŞ 18 MODELİN VERİ SETİ
         const menuData = {
             yemekler: [
                 { file: "mustafa_-_cig_kofte.glb", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 5.5, rotX: 20, rotY: 0, posY: -0.2 },
                 { file: "burger_and_chips.glb", name: "Gurme Burger & Patates", price: "260 TL", cal: "750 kcal", desc: "150gr dana köfte, çıtır patates kızartması ve özel sos eşliğinde.", scale: 0.08, rotX: 15, rotY: 0, posY: -0.1 },
-                // Pide düzeltildi: 50 derece yukarı kaldırılarak kameraya bakması sağlandı 🌟
-                { file: "pide_turkish_pizzakusbaskasar.glb", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri.", scale: 0.55, rotX: 50, rotY: 0, posY: -0.1 },
+                // Pide yönü düzeltildi: rotX 70 yapılarak tam kameraya kaldırıldı 🌟
+                { file: "pide_turkish_pizzakusbaskasar.glb", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri.", scale: 0.55, rotX: 70, rotY: 0, posY: -0.1 },
                 { file: "pizza.glb", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ve mısır taneleriyle İtalyan usulü.", scale: 1.4, rotX: 25, rotY: 0, posY: -0.2 },
                 { file: "gözleme.glb", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme.", scale: 1.5, rotX: 20, rotY: 0, posY: -0.2 }
             ],
             atıştırmalıklar: [
-                // Pringles düzeltildi: rotY açı dengesi tam ön yüze çekildi 🌟
-                { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 1.6, rotX: 5, rotY: 0, posY: -0.1 },
+                // Pringles düzeltildi: rotY 180 yapıldı tam logolu ön yüzü sana bakacak 🌟
+                { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 1.6, rotX: 5, rotY: 180, posY: -0.1 },
                 { file: "lays_kırmızı.glb", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi.", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 },
-                { file: "chips_mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 }
+                // Mavi Ruffles düzeltildi: Boyutu devasa ölçekte büyütüldü (1.5 yapıldı) artık net gelecek 🌟
+                { file: "chips_mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 1.5, rotX: 15, rotY: 0, posY: -0.1 }
             ],
             tatlılar: [
-                // Baklava dosya adı düzeltildi: baklava_ince_tabak.glb 🌟
+                // Baklava ismi düzeltildi: baklava_ince_tabak.glb 🌟
                 { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 0.8, rotX: 20, rotY: 0, posY: -0.2 },
                 { file: "cookies.glb", name: "Çikolatalı Ev Kurabiyesi", price: "95 TL", cal: "320 kcal", desc: "Fırından yeni çıkmış, içi yumuşak parça çikolatalı kurabiyeler.", scale: 3.8, rotX: 15, rotY: 0, posY: -0.1 },
                 { file: "dessert_for_breakfast.glb", name: "Meyveli Pancake Kulesi", price: "180 TL", cal: "510 kcal", desc: "Akçaağaç şurubu, çilek ve yaban mersini ile tatlandırılmış pancake.", scale: 3.2, rotX: 15, rotY: 0, posY: -0.1 },
                 { file: "ice_cream.glb", name: "Meyveli İtalyan Dondurması", price: "110 TL", cal: "210 kcal", desc: "Doğal meyve özleriyle hazırlanmış serinletici el yapımı dondurma.", scale: 0.07, rotX: 10, rotY: 0, posY: -0.1 }
             ],
             içecekler: [
-                // Ayran ismi sadece Ayran yapıldı 🌟
+                // İsmi sadeleştirildi
                 { file: "ayran_turkish_drink_game_asset.glb", name: "Ayran", price: "45 TL", cal: "80 kcal", desc: "Doğal yoğurttan yapılmış, buz gibi ferahlatıcı tuzlu yayık ayranı.", scale: 0.15, rotX: 0, rotY: 0, posY: -0.1 },
                 { file: "cup_of_cappuccino.glb", name: "Köpüklü Cappuccino", price: "85 TL", cal: "120 kcal", desc: "Zengin espresso lezzeti ve kadife kıvamında sıcak süt köpüğü.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
                 { file: "ice_coffee.glb", name: "Buzlu Karamel Latte", price: "90 TL", cal: "110 kcal", desc: "Soğuk espresso, süt ve karamel şurubunun buzla mükemmel uyumu.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
@@ -151,9 +185,9 @@
 
         let currentCategory = "yemekler";
         let activeIndex = 0;
+        let cart = []; // Sepet dizisi 🌟
 
         const wrapper = document.getElementById('model-wrapper');
-        const mainModel = document.getElementById('main-model');
         
         let localX = 0, localY = 0;
         let baseScale = 1;
@@ -195,22 +229,24 @@
             }
         }
 
+        // AKICI MODEL ENJEKSİYON DÖNGÜSÜ
         function showActiveModel() {
             const list = menuData[currentCategory];
-            const current = list[current.file ? activeIndex : 0];
+            const current = list[activeIndex];
             if (!current) return;
 
             document.getElementById('modelCounter').innerText = `${activeIndex + 1} / ${list.length}`;
 
-            // A-Frame Sıfırlama ve Dinamik Enjeksiyon (Hızlı Çalışma Sağlar)
-            if (mainModel) {
-                mainModel.removeAttribute('gltf-model');
-                mainModel.setAttribute('gltf-model', `./${current.file}`);
-                mainModel.setAttribute('scale', `${current.scale} ${current.scale} ${current.scale}`);
-                mainModel.setAttribute('position', `0 ${current.posY} 0`);
-                localRotY = current.rotY;
-                mainModel.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
-            }
+            // A-Frame önbellek hatasını önlemek için elementi silip temiz olarak sıfırdan ekliyoruz 🌟
+            wrapper.innerHTML = '';
+            const newModel = document.createElement('a-gltf-model');
+            newModel.setAttribute('id', 'main-model');
+            newModel.setAttribute('src', `./${current.file}`);
+            newModel.setAttribute('scale', `${current.scale} ${current.scale} ${current.scale}`);
+            newModel.setAttribute('position', `0 ${current.posY} 0`);
+            localRotY = current.rotY;
+            newModel.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
+            wrapper.appendChild(newModel);
 
             document.getElementById('foodTitle').innerText = current.name;
             document.getElementById('foodPrice').innerText = current.price;
@@ -218,7 +254,63 @@
             document.getElementById('foodDesc').innerText = current.desc;
         }
 
-        // AKICI DOKUNMATİK HAREKET DÖNGÜSÜ
+        // --- SEPET MANTIĞI VE UI SCRIPT'LERİ ---
+        function addItemToCart() {
+            const current = menuData[currentCategory][activeIndex];
+            // Fiyattaki rakam dışı karakterleri temizleyip sayıya dönüştürüyoruz
+            const priceNum = parseInt(current.price.replace(/[^0-9]/g, ''));
+            
+            // Ürün sepette zaten var mı kontrol et
+            const existing = cart.find(item => item.name === current.name);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ name: current.name, price: priceNum, quantity: 1 });
+            }
+            
+            updateCartUI();
+            alert(`${current.name} sepete eklendi!`);
+        }
+
+        function updateCartUI() {
+            // Toplam ürün adeti hesabı
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.querySelector('.cart-icon-btn').innerText = `Sepetim (${totalItems})`;
+
+            // Sepet listesini oluşturma
+            const listContainer = document.getElementById('cartItemsList');
+            if (cart.length === 0) {
+                listContainer.innerHTML = '<p style="color: #7f8c8d; text-align: center; margin-top: 40px;">Sepetiniz henüz boş.</p>';
+                document.getElementById('cartTotalTax').innerText = '0 TL';
+                return;
+            }
+
+            let html = '';
+            let totalTutar = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalTutar += itemTotal;
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <strong style="color:#2c3e50;">${item.name}</strong> 
+                            <span style="color:#7f8c8d; margin-left:10px;">x${item.quantity}</span>
+                        </div>
+                        <span style="font-weight:bold; color:#e67e22;">${itemTotal} TL</span>
+                    </div>
+                `;
+            });
+            
+            listContainer.innerHTML = html;
+            document.getElementById('cartTotalTax').innerText = `${totalTutar} TL`;
+        }
+
+        function toggleCartModal() {
+            document.getElementById('cartModal').classList.toggle('open');
+        }
+
+        // --- DOKUNMATİK AR HAREKET ALGILAYICISI ---
         window.addEventListener('touchstart', function(e) {
             if (e.touches.length === 1) {
                 isDragging = true;
@@ -232,7 +324,8 @@
         });
 
         window.addEventListener('touchmove', function(e) {
-            if (!wrapper || !mainModel) return;
+            const mainModelObj = document.getElementById('main-model');
+            if (!wrapper || !mainModelObj) return;
             const list = menuData[currentCategory];
             const current = list[activeIndex];
 
@@ -263,14 +356,13 @@
                     let angleDiff = currentAngle - startAngle;
                     
                     localRotY = localRotY + (angleDiff * (180 / Math.PI) * 0.5);
-                    mainModel.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
+                    mainModelObj.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
                     startAngle = currentAngle;
                 }
             }
         });
 
         window.addEventListener('touchend', function() { isDragging = false; startPinchDist = null; startAngle = null; });
-        function addToCart() { alert(document.getElementById('foodTitle').innerText + " sipariş sepetine eklendi!"); }
     </script>
 </body>
 </html>
