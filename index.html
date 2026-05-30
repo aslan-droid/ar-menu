@@ -73,7 +73,7 @@
         .food-description { color: #5d6d7e; font-size: 13px; line-height: 1.4; margin: 0 0 15px 0; height: 38px; overflow-y: auto; }
         .add-to-cart-btn { width: 100%; background: #2ecc71; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; }
 
-        /* ANIMASYONLU ÖZEL TOAST POPUP */
+        /* ÖZEL TOAST POPUP */
         .custom-toast {
             position: absolute; top: 125px; left: 50%; transform: translateX(-50%) scale(0.9);
             background: rgba(46, 204, 113, 0.95); color: white; padding: 10px 22px;
@@ -100,13 +100,14 @@
         .quantity-controls { display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0; }
         .qty-btn { background: white; border: 1px solid #cbd5e1; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #475569; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .qty-num { font-weight: 700; color: #1e293b; min-width: 16px; text-align: center; font-size: 14px; }
+
         .cart-total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin: 20px 0; color: #2c3e50; border-top: 2px solid #333; padding-top: 15px; }
         
         .cart-action-group { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
         .checkout-trigger-btn { width: 100%; background: #2ecc71; color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(46,204,113,0.3); }
         .close-cart-btn { background: #e74c3c; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; font-size: 14px; }
 
-        /* MASA SEÇİM PANELİ */
+        /* MASA SEÇİM PANELİ MODALİ */
         .checkout-modal {
             position: absolute; bottom: -100%; left: 0; width: 100%; height: 100%;
             background: #f8fafc; z-index: 2500; transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -119,7 +120,7 @@
         .checkout-textarea { height: 100px; resize: none; }
         .send-order-btn { background: #e67e22; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(230,126,34,0.3); }
         
-        /* ADİSYON MAKBUZ EKRANI */
+        /* ADİSYON / MAKBUZ EKRANI */
         .receipt-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #1e293b; z-index: 3000; display: none; flex-direction: column;
@@ -193,6 +194,7 @@
 
     <div class="checkout-modal" id="checkoutModal">
         <h2 style="margin: 0; color: #1e293b; border-bottom: 2px solid #e67e22; padding-bottom: 10px;">Masa & Sipariş Onayı</h2>
+        
         <div style="margin-top: 25px; flex: 1;">
             <div class="input-group">
                 <label class="input-label">Masa Numaranız:</label>
@@ -204,11 +206,13 @@
                     <option value="Masa 5">Masa 5</option>
                 </select>
             </div>
+
             <div class="input-group">
                 <label class="input-label">Sipariş Notu (Opsiyonel):</label>
                 <textarea class="checkout-textarea" id="orderNote" placeholder="Örn: İçecekler soğuk gelsin, acısı az olsun..."></textarea>
             </div>
         </div>
+
         <div class="cart-action-group">
             <button class="send-order-btn" onclick="submitFinalOrder()">Siparişi Mutfağa Gönder</button>
             <button class="close-cart-btn" style="background:#64748b;" onclick="toggleCheckoutModal(false)">Geri Dön</button>
@@ -238,7 +242,7 @@
     </div>
 
     <script>
-        // SİZİN GÖNDERDİĞİNİZ FIREBASE ENTEGRASYONU 🌟
+        // SİZİN ENTEGRE ETTİĞİNİZ FIREBASE ENTEGRASYONU 🌟
         const firebaseConfig = {
             apiKey: "AIzaSyC2vY1s-8E4DnoHMqxONwhURVnDMUowRfs",
             authDomain: "ar-menu-cd9c2.firebaseapp.com",
@@ -253,6 +257,7 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // MENÜ VERİLERİ (Pringles Boyutu Küçültüldü 🌟)
         const menuData = {
             yemekler: [
                 { file: "mustafa_-_cig_kofte.glb", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 5.5, rotX: 20, rotY: 0, posY: -0.2 },
@@ -262,9 +267,10 @@
                 { file: "gözleme.glb", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme.", scale: 1.5, rotX: 20, rotY: 0, posY: -0.2 }
             ],
             atıştırmalıklar: [
-                { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 0.05, rotX: 5, rotY: 180, posY: -0.1 },
-                { file: "lays_kırmızı.glb", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi.", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 },
-                { file: "chips_mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 1.5, rotX: 15, rotY: 0, posY: -0.1 }
+                // Pringles 0.05'ten 0.02 değerine düşürülerek 2.5 kat daha küçültüldü 🌟
+                { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 0.02, rotX: 5, rotY: 180, posY: -0.1 },
+                { file: "lays_kırmızı.glb", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi .", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 },
+                { file: "chips__mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Üçgen şekilli ve ekstra çıtır patates cipsi lezzeti.", scale: 1.5, rotX: 15, rotY: 0, posY: -0.1 }
             ],
             tatlılar: [
                 { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 1.6, rotX: 20, rotY: 0, posY: -0.2 },
@@ -276,7 +282,7 @@
                 { file: "cup_of_cappuccino.glb", name: "Köpüklü Cappuccino", price: "85 TL", cal: "120 kcal", desc: "Zengin espresso lezzeti ve kadife kıvamında sıcak süt köpüğü.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
                 { file: "ice_coffee.glb", name: "Buzlu Karamel Latte", price: "90 TL", cal: "110 kcal", desc: "Soğuk espresso, süt ve karamel şurubunun buzla mükemmel uyumu.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
                 { file: "coca_cola_bottle_glass.glb", name: "Coca-Cola (Cam Şişe)", price: "55 TL", cal: "140 kcal", desc: "Buz gibi klasik orijinal tat orijinal cam şişesinde.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 },
-                { file: "soda_can_kutu.glb", name: "Kutu Çilekli Soda", price: "40 TL", cal: "90 kcal", desc: "Ferahlatıcı, meyve aromalı soğuk kutu maden suyu.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 },
+                { file: "soda_can_kutu.glb", name: "Kutu Kola", price: "40 TL", cal: "90 kcal", desc: "Buz gibi klasik orijinal tat orijinal kutuda.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 },
                 { file: "water_bottle.glb", name: "Doğal Kaynak Suyu", price: "20 TL", cal: "0 kcal", desc: "Serinletici, berrak ve sağlıklı pet şişe doğal kaynak suyu.", scale: 0.06, rotX: 0, rotY: 0, posY: -0.1 }
             ]
         };
@@ -386,6 +392,7 @@
         function toggleCartModal() { document.getElementById('cartModal').classList.toggle('open'); }
         function toggleCheckoutModal(show) { if (show && cart.length === 0) { alert("Sepetiniz boş."); return; } document.getElementById('checkoutModal').classList.toggle('open', show); }
 
+        // FİREBASE BULUTA ANLIK VERİ FIRLATMA MOTORU 🚀
         function submitFinalOrder() {
             const table = document.getElementById('tableNumber').value;
             const note = document.getElementById('orderNote').value || "Yok";
@@ -393,7 +400,7 @@
             
             let totalTutar = 0;
             let receiptHtml = '';
-            let dbProducts = [];
+            let dbProducts = []; // Veritabanına gidecek sade dizi
 
             cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;
@@ -408,15 +415,17 @@
             document.getElementById('receiptItems').innerHTML = receiptHtml;
             document.getElementById('receiptTotal').innerText = `${totalTutar} TL`;
 
+            // Bulut Veritabanı Gönderim Paketi
             const siparisPaketi = {
                 masa: table,
                 tarih: today,
                 not: note,
                 urunler: dbProducts,
                 toplam: totalTutar,
-                durum: "Bekliyor"
+                durum: "Bekliyor" // Mutfaktan onaylanabilmesi için varsayılan durum
             };
 
+            // Firebase'e Push Etme (Sessizce Arkada Gönderir) 🌟
             database.ref('siparisler').push(siparisPaketi)
                 .then(() => {
                     toggleCheckoutModal(false);
@@ -424,12 +433,13 @@
                     document.getElementById('receiptScreen').style.display = 'flex';
                 })
                 .catch((error) => {
-                    alert("Bulut hatası: " + error.message);
+                    alert("Sipariş iletilirken bulut hatası oluştu: " + error.message);
                 });
         }
 
         function restartApplication() { cart = []; updateCartUI(); document.getElementById('orderNote').value = ''; document.getElementById('receiptScreen').style.display = 'none'; }
 
+        // AR DOKUNMATİK MOTORU
         window.addEventListener('touchstart', function(e) {
             if (e.touches.length === 1) { isDragging = true; startTouchX = e.touches[0].clientX; startTouchY = e.touches[0].clientY; }
             else if (e.touches.length === 2) { isDragging = false; startPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startAngle = Math.atan2(e.touches[1].clientY - e.touches[0].clientY, e.touches[1].clientX - e.touches[0].clientX); }
