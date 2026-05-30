@@ -73,17 +73,39 @@
             border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer;
         }
 
-        /* SEPET DETAY MODAL PANELİ */
+        /* TARAYICI UYARISINI SİLEN ÖZEL ŞIK BİLDİRİM PANELİ (TOAST) */
+        .custom-toast {
+            position: absolute; top: 125px; left: 50%; transform: translateX(-50%) scale(0.9);
+            background: rgba(46, 204, 113, 0.95); color: white; padding: 10px 22px;
+            border-radius: 25px; font-weight: bold; z-index: 3000; font-size: 13px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2); pointer-events: none;
+            opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .custom-toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
+
+        /* YENİ NESİL SEPET MODAL PANELİ */
         .cart-modal {
             position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.98); z-index: 2000; transition: top 0.4s ease;
-            padding: 30px 20px; box-sizing: border-box; display: flex; flex-direction: column;
+            background: rgba(255, 255, 255, 0.98); z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            padding: 30px 24px; box-sizing: border-box; display: flex; flex-direction: column;
         }
         .cart-modal.open { top: 0; }
         .cart-items-list { flex: 1; overflow-y: auto; margin-top: 20px; }
-        .cart-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 16px; }
+        
+        /* SEPET İÇİ SATIR TASARIMI */
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #eee; }
+        .item-details { display: flex; flex-direction: column; gap: 4px; }
+        .item-name-txt { font-weight: bold; color: #2c3e50; font-size: 15px; }
+        .item-price-txt { color: #e67e22; font-weight: 600; font-size: 14px; }
+        
+        /* ADET DEĞİŞTİRME BUTONLARI (+ ve -) */
+        .quantity-controls { display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 6px 12px; border-radius: 20px; border: 1px solid #e2e8f0; }
+        .qty-btn { background: white; border: 1px solid #cbd5e1; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #475569; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .qty-btn:active { background: #e2e8f0; }
+        .qty-num { font-weight: 700; color: #1e293b; min-width: 16px; text-align: center; font-size: 14px; }
+
         .cart-total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin: 20px 0; color: #2c3e50; border-top: 2px solid #333; padding-top: 15px; }
-        .close-cart-btn { background: #e74c3c; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; }
+        .close-cart-btn { background: #e74c3c; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; box-shadow: 0 4px 10px rgba(231,76,60,0.2); }
 
         .arjs-loader { display: none !important; }
     </style>
@@ -91,6 +113,7 @@
 <body>
 
     <button class="cart-icon-btn" onclick="toggleCartModal()">Sepetim (0)</button>
+    <div class="custom-toast" id="toastBar">✓ Ürün Sepete Eklendi</div>
 
     <div class="ui-header">
         <h1 class="site-title">AR MENÜ</h1>
@@ -108,9 +131,7 @@
     <div class="model-counter" id="modelCounter">1 / 5</div>
 
     <a-scene mindar-image="imageTargetSrc: ./menu.mind; filterMinCF:0.001; filterBeta: 0.01;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-        
         <a-assets></a-assets>
-
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
         <a-entity light="type: ambient; intensity: 1.2;"></a-entity>
         <a-entity light="type: directional; intensity: 0.8;" position="1 4 2"></a-entity>
@@ -148,56 +169,49 @@
     </div>
 
     <script>
-        // TEMİZLENMİŞ VE HATALARI DÜZELTİLMİŞ 18 MODELİN VERİ SETİ
+        // PANCAKE SİLİNDİ, BAKLAVA BÜYÜTÜLDÜ, SU KÜÇÜLTÜLDÜ 🌟
         const menuData = {
             yemekler: [
                 { file: "mustafa_-_cig_kofte.glb", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 5.5, rotX: 20, rotY: 0, posY: -0.2 },
                 { file: "burger_and_chips.glb", name: "Gurme Burger & Patates", price: "260 TL", cal: "750 kcal", desc: "150gr dana köfte, çıtır patates kızartması ve özel sos eşliğinde.", scale: 0.08, rotX: 15, rotY: 0, posY: -0.1 },
-                // Pide yönü düzeltildi: rotX 70 yapılarak tam kameraya kaldırıldı 🌟
                 { file: "pide_turkish_pizzakusbaskasar.glb", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri.", scale: 0.55, rotX: 70, rotY: 0, posY: -0.1 },
                 { file: "pizza.glb", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ve mısır taneleriyle İtalyan usulü.", scale: 1.4, rotX: 25, rotY: 0, posY: -0.2 },
                 { file: "gözleme.glb", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme.", scale: 1.5, rotX: 20, rotY: 0, posY: -0.2 }
             ],
             atıştırmalıklar: [
-                // Pringles düzeltildi: rotY 180 yapıldı tam logolu ön yüzü sana bakacak 🌟
                 { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 1.6, rotX: 5, rotY: 180, posY: -0.1 },
                 { file: "lays_kırmızı.glb", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi.", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 },
-                // Mavi Ruffles düzeltildi: Boyutu devasa ölçekte büyütüldü (1.5 yapıldı) artık net gelecek 🌟
                 { file: "chips_mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 1.5, rotX: 15, rotY: 0, posY: -0.1 }
             ],
             tatlılar: [
-                // Baklava ismi düzeltildi: baklava_ince_tabak.glb 🌟
-                { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 0.8, rotX: 20, rotY: 0, posY: -0.2 },
+                // Baklava boyutu 0.8'den 1.6'ya yükseltildi (2 kat büyütüldü) 🌟
+                { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 1.6, rotX: 20, rotY: 0, posY: -0.2 },
                 { file: "cookies.glb", name: "Çikolatalı Ev Kurabiyesi", price: "95 TL", cal: "320 kcal", desc: "Fırından yeni çıkmış, içi yumuşak parça çikolatalı kurabiyeler.", scale: 3.8, rotX: 15, rotY: 0, posY: -0.1 },
-                { file: "dessert_for_breakfast.glb", name: "Meyveli Pancake Kulesi", price: "180 TL", cal: "510 kcal", desc: "Akçaağaç şurubu, çilek ve yaban mersini ile tatlandırılmış pancake.", scale: 3.2, rotX: 15, rotY: 0, posY: -0.1 },
                 { file: "ice_cream.glb", name: "Meyveli İtalyan Dondurması", price: "110 TL", cal: "210 kcal", desc: "Doğal meyve özleriyle hazırlanmış serinletici el yapımı dondurma.", scale: 0.07, rotX: 10, rotY: 0, posY: -0.1 }
             ],
             içecekler: [
-                // İsmi sadeleştirildi
                 { file: "ayran_turkish_drink_game_asset.glb", name: "Ayran", price: "45 TL", cal: "80 kcal", desc: "Doğal yoğurttan yapılmış, buz gibi ferahlatıcı tuzlu yayık ayranı.", scale: 0.15, rotX: 0, rotY: 0, posY: -0.1 },
                 { file: "cup_of_cappuccino.glb", name: "Köpüklü Cappuccino", price: "85 TL", cal: "120 kcal", desc: "Zengin espresso lezzeti ve kadife kıvamında sıcak süt köpüğü.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
                 { file: "ice_coffee.glb", name: "Buzlu Karamel Latte", price: "90 TL", cal: "110 kcal", desc: "Soğuk espresso, süt ve karamel şurubunun buzla mükemmel uyumu.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
                 { file: "coca_cola_bottle_glass.glb", name: "Coca-Cola (Cam Şişe)", price: "55 TL", cal: "140 kcal", desc: "Buz gibi klasik orijinal tat orijinal cam şişesinde.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 },
                 { file: "soda_can_kutu.glb", name: "Kutu Çilekli Soda", price: "40 TL", cal: "90 kcal", desc: "Ferahlatıcı, meyve aromalı soğuk kutu maden suyu.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 },
-                { file: "water_bottle.glb", name: "Doğal Kaynak Suyu", price: "20 TL", cal: "0 kcal", desc: "Serinletici, berrak ve sağlıklı pet şişe doğal kaynak suyu.", scale: 0.15, rotX: 0, rotY: 0, posY: -0.1 }
+                // Su şişesi boyutu 0.15'ten 0.06'ya düşürüldü (Küçültüldü) 🌟
+                { file: "water_bottle.glb", name: "Doğal Kaynak Suyu", price: "20 TL", cal: "0 kcal", desc: "Serinletici, berrak ve sağlıklı pet şişe doğal kaynak suyu.", scale: 0.06, rotX: 0, rotY: 0, posY: -0.1 }
             ]
         };
 
         let currentCategory = "yemekler";
         let activeIndex = 0;
-        let cart = []; // Sepet dizisi 🌟
+        let cart = []; 
 
         const wrapper = document.getElementById('model-wrapper');
-        
         let localX = 0, localY = 0;
         let baseScale = 1;
         let localRotY = 0;
         let startTouchX, startTouchY, startPinchDist, startAngle;
         let isDragging = false;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            updateFilter();
-        });
+        window.addEventListener('DOMContentLoaded', () => { updateFilter(); });
 
         function changeCategory(catName, btn) {
             currentCategory = catName;
@@ -229,7 +243,6 @@
             }
         }
 
-        // AKICI MODEL ENJEKSİYON DÖNGÜSÜ
         function showActiveModel() {
             const list = menuData[currentCategory];
             const current = list[activeIndex];
@@ -237,7 +250,6 @@
 
             document.getElementById('modelCounter').innerText = `${activeIndex + 1} / ${list.length}`;
 
-            // A-Frame önbellek hatasını önlemek için elementi silip temiz olarak sıfırdan ekliyoruz 🌟
             wrapper.innerHTML = '';
             const newModel = document.createElement('a-gltf-model');
             newModel.setAttribute('id', 'main-model');
@@ -254,13 +266,19 @@
             document.getElementById('foodDesc').innerText = current.desc;
         }
 
-        // --- SEPET MANTIĞI VE UI SCRIPT'LERİ ---
+        // --- MODERN TOAST BİLDİRİM SİSTEMİ (GITHUB YAZISINI SİLER) ---
+        function triggerToast(msg) {
+            const toast = document.getElementById('toastBar');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+
+        // --- GELİŞMİŞ + / - SEPET SİSTEMİ MANTIĞI ---
         function addItemToCart() {
             const current = menuData[currentCategory][activeIndex];
-            // Fiyattaki rakam dışı karakterleri temizleyip sayıya dönüştürüyoruz
             const priceNum = parseInt(current.price.replace(/[^0-9]/g, ''));
             
-            // Ürün sepette zaten var mı kontrol et
             const existing = cart.find(item => item.name === current.name);
             if (existing) {
                 existing.quantity++;
@@ -269,15 +287,28 @@
             }
             
             updateCartUI();
-            alert(`${current.name} sepete eklendi!`);
+            triggerToast(`✓ ${current.name} Sepete Eklendi!`); // Özel popup çağrıldı 🌟
+        }
+
+        // SEPET MANTIĞINDA ADET ARTIRMA / AZALTMA FONKSİYONU 🌟
+        function modifyQty(itemName, delta) {
+            const targetItem = cart.find(item => item.name === itemName);
+            if (!targetItem) return;
+
+            targetItem.quantity += delta;
+
+            // Eğer adet 0 veya altına düşerse ürünü sepet listesinden tamamen sil
+            if (targetItem.quantity <= 0) {
+                cart = cart.filter(item => item.name !== itemName);
+            }
+
+            updateCartUI();
         }
 
         function updateCartUI() {
-            // Toplam ürün adeti hesabı
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.querySelector('.cart-icon-btn').innerText = `Sepetim (${totalItems})`;
 
-            // Sepet listesini oluşturma
             const listContainer = document.getElementById('cartItemsList');
             if (cart.length === 0) {
                 listContainer.innerHTML = '<p style="color: #7f8c8d; text-align: center; margin-top: 40px;">Sepetiniz henüz boş.</p>';
@@ -293,11 +324,15 @@
                 totalTutar += itemTotal;
                 html += `
                     <div class="cart-item">
-                        <div>
-                            <strong style="color:#2c3e50;">${item.name}</strong> 
-                            <span style="color:#7f8c8d; margin-left:10px;">x${item.quantity}</span>
+                        <div class="item-details">
+                            <span class="item-name-txt">${item.name}</span>
+                            <span class="item-price-txt">${item.price} TL</span>
                         </div>
-                        <span style="font-weight:bold; color:#e67e22;">${itemTotal} TL</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="modifyQty('${item.name}', -1)">-</button>
+                            <span class="qty-num">${item.quantity}</span>
+                            <button class="qty-btn" onclick="modifyQty('${item.name}', 1)">+</button>
+                        </div>
                     </div>
                 `;
             });
@@ -306,11 +341,9 @@
             document.getElementById('cartTotalTax').innerText = `${totalTutar} TL`;
         }
 
-        function toggleCartModal() {
-            document.getElementById('cartModal').classList.toggle('open');
-        }
+        function toggleCartModal() { document.getElementById('cartModal').classList.toggle('open'); }
 
-        // --- DOKUNMATİK AR HAREKET ALGILAYICISI ---
+        // --- DOKUNMATİK AR MOTORU ---
         window.addEventListener('touchstart', function(e) {
             if (e.touches.length === 1) {
                 isDragging = true;
