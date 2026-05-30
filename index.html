@@ -84,68 +84,20 @@
     <button class="nav-arrow left" onclick="navigateModel(-1)">❮</button>
     <button class="nav-arrow right" onclick="navigateModel(1)">❯</button>
 
-    <div class="model-counter" id="modelCounter">1 / 6</div>
+    <div class="model-counter" id="modelCounter">1 / 5</div>
 
     <a-scene mindar-image="imageTargetSrc: ./menu.mind; filterMinCF:0.001; filterBeta: 0.01;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
         
-        <a-assets>
-            <a-asset-item id="m-adana" src="./mustafa_-_adana.glb"></a-asset-item>
-            <a-asset-item id="m-cigkofte" src="./mustafa_-_cig_kofte.glb"></a-asset-item>
-            <a-asset-item id="m-burger" src="./burger_and_chips.glb"></a-asset-item>
-            <a-asset-item id="m-pide" src="./pide_turkish_pizzakusbaskasar.glb"></a-asset-item>
-            <a-asset-item id="m-pizza" src="./pizza.glb"></a-asset-item>
-            <a-asset-item id="m-gozleme" src="./gözleme.glb"></a-asset-item>
-            <a-asset-item id="m-pringles" src="./pringles_chips_can.glb"></a-asset-item>
-            <a-asset-item id="m-lays" src="./lays_kırmızı.glb"></a-asset-item>
-            <a-asset-item id="m-chips" src="./chips_mavi.glb"></a-asset-item>
-            <a-asset-item id="m-baklava" src="./baklava_ince_tablak.glb"></a-asset-item>
-            <a-asset-item id="m-cookies" src="./cookies.glb"></a-asset-item>
-            <a-asset-item id="m-pancake" src="./dessert_for_breakfast.glb"></a-asset-item>
-            <a-asset-item id="m-icecream" src="./ice_cream.glb"></a-asset-item>
-            <a-asset-item id="m-ayran" src="./ayran_turkish_drink_game_asset.glb"></a-asset-item>
-            <a-asset-item id="m-kahve" src="./turkish_coffee.glb"></a-asset-item>
-            <a-asset-item id="m-tea" src="./glass_tea.glb"></a-asset-item>
-            <a-asset-item id="m-cappuccino" src="./cup_of_cappuccino.glb"></a-asset-item>
-            <a-asset-item id="m-icecoffee" src="./ice_coffee.glb"></a-asset-item>
-            <a-asset-item id="m-cola" src="./coca_cola_bottle_glass.glb"></a-asset-item>
-            <a-asset-item id="m-soda" src="./soda_can_kutu.glb"></a-asset-item>
-            <a-asset-item id="m-water" src="./water_bottle.glb"></a-asset-item>
-        </a-assets>
+        <a-assets></a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        <a-entity light="type: ambient; intensity: 1.1;"></a-entity>
+        <a-entity light="type: ambient; intensity: 1.2;"></a-entity>
         <a-entity light="type: directional; intensity: 0.8;" position="1 4 2"></a-entity>
 
         <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
-            
             <a-entity id="model-wrapper" position="0 0 0" rotation="0 0 0" scale="1 1 1">
-                
-                <a-gltf-model id="item-adana" src="#m-adana" visible="false" scale="1.4 1.4 1.4" rotation="20 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-cigkofte" src="#m-cigkofte" visible="false" scale="5.5 5.5 5.5" rotation="20 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-burger" src="#m-burger" visible="false" scale="0.08 0.08 0.08" rotation="15 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-pide" src="#m-pide" visible="false" scale="0.6 0.6 0.6" rotation="10 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-pizza" src="#m-pizza" visible="false" scale="1.4 1.4 1.4" rotation="25 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-gozleme" src="#m-gozleme" visible="false" scale="1.5 1.5 1.5" rotation="20 0 0" position="0 -0.1 0"></a-gltf-model>
-                
-                <a-gltf-model id="item-pringles" src="#m-pringles" visible="false" scale="1.5 1.5 1.5" rotation="0 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-lays" src="#m-lays" visible="false" scale="0.035 0.035 0.035" rotation="15 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-chips" src="#m-chips" visible="false" scale="0.035 0.035 0.035" rotation="15 0 0" position="0 -0.1 0"></a-gltf-model>
-                
-                <a-gltf-model id="item-baklava" src="#m-baklava" visible="false" scale="0.8 0.8 0.8" rotation="20 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-cookies" src="#m-cookies" visible="false" scale="3.8 3.8 3.8" rotation="15 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-pancake" src="#m-pancake" visible="false" scale="3.2 3.2 3.2" rotation="15 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-icecream" src="#m-icecream" visible="false" scale="0.07 0.07 0.07" rotation="10 0 0" position="0 -0.1 0"></a-gltf-model>
-
-                <a-gltf-model id="item-ayran" src="#m-ayran" visible="false" scale="0.15 0.15 0.15" rotation="0 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-kahve" src="#m-kahve" visible="false" scale="1.4 1.4 1.4" rotation="10 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-tea" src="#m-tea" visible="false" scale="0.04 0.04 0.04" rotation="10 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-cappuccino" src="#m-cappuccino" visible="false" scale="1.4 1.4 1.4" rotation="10 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-icecoffee" src="#m-icecoffee" visible="false" scale="1.4 1.4 1.4" rotation="10 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-cola" src="#m-cola" visible="false" scale="0.8 0.8 0.8" rotation="0 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-soda" src="#m-soda" visible="false" scale="0.8 0.8 0.8" rotation="0 0 0" position="0 -0.1 0"></a-gltf-model>
-                <a-gltf-model id="item-water" src="#m-water" visible="false" scale="0.15 0.15 0.15" rotation="0 0 0" position="0 -0.1 0"></a-gltf-model>
+                <a-gltf-model id="main-model"></a-gltf-model>
             </a-entity>
-
         </a-entity>
     </a-scene>
 
@@ -163,35 +115,37 @@
     </div>
 
     <script>
+        // İSTEKLERİNE GÖRE TAMAMEN GÜNCELLENEN VE TEMİZLENEN VERİ LİSTESİ
         const menuData = {
             yemekler: [
-                { id: "item-adana", name: "Zırh Adana Kebap", price: "340 TL", cal: "620 kcal", desc: "Zırhta çekilmiş hakiki kuzu kıyması, közlenmiş biber ve domatesle." },
-                { id: "item-cigkofte", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet." },
-                { id: "item-burger", name: "Gurme Burger & Patates", price: "260 TL", cal: "750 kcal", desc: "150gr dana köfte, çıtır patates kızartması ve özel sos eşliğinde." },
-                { id: "item-pide", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri." },
-                { id: "item-pizza", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ve mısır taneleriyle İtalyan usulü." },
-                { id: "item-gozleme", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme." }
+                { file: "mustafa_-_cig_kofte.glb", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 5.5, rotX: 20, rotY: 0, posY: -0.2 },
+                { file: "burger_and_chips.glb", name: "Gurme Burger & Patates", price: "260 TL", cal: "750 kcal", desc: "150gr dana köfte, çıtır patates kızartması ve özel sos eşliğinde.", scale: 0.08, rotX: 15, rotY: 0, posY: -0.1 },
+                // Pide düzeltildi: 50 derece yukarı kaldırılarak kameraya bakması sağlandı 🌟
+                { file: "pide_turkish_pizzakusbaskasar.glb", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri.", scale: 0.55, rotX: 50, rotY: 0, posY: -0.1 },
+                { file: "pizza.glb", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ve mısır taneleriyle İtalyan usulü.", scale: 1.4, rotX: 25, rotY: 0, posY: -0.2 },
+                { file: "gözleme.glb", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme.", scale: 1.5, rotX: 20, rotY: 0, posY: -0.2 }
             ],
             atıştırmalıklar: [
-                { id: "item-pringles", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda." },
-                { id: "item-lays", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi." },
-                { id: "item-chips", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti." }
+                // Pringles düzeltildi: rotY açı dengesi tam ön yüze çekildi 🌟
+                { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 1.6, rotX: 5, rotY: 0, posY: -0.1 },
+                { file: "lays_kırmızı.glb", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi.", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 },
+                { file: "chips_mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 }
             ],
             tatlılar: [
-                { id: "item-baklava", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet." },
-                { id: "item-cookies", name: "Çikolatalı Ev Kurabiyesi", price: "95 TL", cal: "320 kcal", desc: "Fırından yeni çıkmış, içi yumuşak parça çikolatalı kurabiyeler." },
-                { id: "item-pancake", name: "Meyveli Pancake Kulesi", price: "180 TL", cal: "510 kcal", desc: "Akçaağaç şurubu, çilek ve yaban mersini ile tatlandırılmış pancake." },
-                { id: "item-icecream", name: "Meyveli İtalyan Dondurması", price: "110 TL", cal: "210 kcal", desc: "Doğal meyve özleriyle hazırlanmış serinletici el yapımı dondurma." }
+                // Baklava dosya adı düzeltildi: baklava_ince_tabak.glb 🌟
+                { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 0.8, rotX: 20, rotY: 0, posY: -0.2 },
+                { file: "cookies.glb", name: "Çikolatalı Ev Kurabiyesi", price: "95 TL", cal: "320 kcal", desc: "Fırından yeni çıkmış, içi yumuşak parça çikolatalı kurabiyeler.", scale: 3.8, rotX: 15, rotY: 0, posY: -0.1 },
+                { file: "dessert_for_breakfast.glb", name: "Meyveli Pancake Kulesi", price: "180 TL", cal: "510 kcal", desc: "Akçaağaç şurubu, çilek ve yaban mersini ile tatlandırılmış pancake.", scale: 3.2, rotX: 15, rotY: 0, posY: -0.1 },
+                { file: "ice_cream.glb", name: "Meyveli İtalyan Dondurması", price: "110 TL", cal: "210 kcal", desc: "Doğal meyve özleriyle hazırlanmış serinletici el yapımı dondurma.", scale: 0.07, rotX: 10, rotY: 0, posY: -0.1 }
             ],
             içecekler: [
-                { id: "item-ayran", name: "Köpüklü Yayık Ayranı", price: "45 TL", cal: "80 kcal", desc: "Doğal yoğurttan yapılmış, buz gibi ferahlatıcı tuzlu yayık ayranı." },
-                { id: "item-kahve", name: "Okkalı Türk Kahvesi", price: "60 TL", cal: "5 kcal", desc: "Cezvede ağır ağır pişmiş, yanında lokumuyla bol köpüklü." },
-                { id: "item-tea", name: "İnce Belli Türk Çayı", price: "30 TL", cal: "0 kcal", desc: "Tavşan kanı renginde, taze demlenmiş sıcacık Türk çayı." },
-                { id: "item-cappuccino", name: "Köpüklü Cappuccino", price: "85 TL", cal: "120 kcal", desc: "Zengin espresso lezzeti ve kadife kıvamında sıcak süt köpüğü." },
-                { id: "item-icecoffee", name: "Buzlu Karamel Latte", price: "90 TL", cal: "110 kcal", desc: "Soğuk espresso, süt ve karamel şurubunun buzla mükemmel uyumu." },
-                { id: "item-cola", name: "Coca-Cola (Cam Şişe)", price: "55 TL", cal: "140 kcal", desc: "Buz gibi klasik orijinal tat orijinal cam şişesinde." },
-                { id: "item-soda", name: "Kutu Çilekli Soda", price: "40 TL", cal: "90 kcal", desc: "Ferahlatıcı, meyve aromalı soğuk kutu maden suyu." },
-                { id: "item-water", name: "Doğal Kaynak Suyu", price: "20 TL", cal: "0 kcal", desc: "Serinletici, berrak ve sağlıklı pet şişe doğal kaynak suyu." }
+                // Ayran ismi sadece Ayran yapıldı 🌟
+                { file: "ayran_turkish_drink_game_asset.glb", name: "Ayran", price: "45 TL", cal: "80 kcal", desc: "Doğal yoğurttan yapılmış, buz gibi ferahlatıcı tuzlu yayık ayranı.", scale: 0.15, rotX: 0, rotY: 0, posY: -0.1 },
+                { file: "cup_of_cappuccino.glb", name: "Köpüklü Cappuccino", price: "85 TL", cal: "120 kcal", desc: "Zengin espresso lezzeti ve kadife kıvamında sıcak süt köpüğü.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
+                { file: "ice_coffee.glb", name: "Buzlu Karamel Latte", price: "90 TL", cal: "110 kcal", desc: "Soğuk espresso, süt ve karamel şurubunun buzla mükemmel uyumu.", scale: 1.4, rotX: 10, rotY: 0, posY: -0.1 },
+                { file: "coca_cola_bottle_glass.glb", name: "Coca-Cola (Cam Şişe)", price: "55 TL", cal: "140 kcal", desc: "Buz gibi klasik orijinal tat orijinal cam şişesinde.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 },
+                { file: "soda_can_kutu.glb", name: "Kutu Çilekli Soda", price: "40 TL", cal: "90 kcal", desc: "Ferahlatıcı, meyve aromalı soğuk kutu maden suyu.", scale: 0.8, rotX: 0, rotY: 0, posY: -0.1 },
+                { file: "water_bottle.glb", name: "Doğal Kaynak Suyu", price: "20 TL", cal: "0 kcal", desc: "Serinletici, berrak ve sağlıklı pet şişe doğal kaynak suyu.", scale: 0.15, rotX: 0, rotY: 0, posY: -0.1 }
             ]
         };
 
@@ -199,6 +153,8 @@
         let activeIndex = 0;
 
         const wrapper = document.getElementById('model-wrapper');
+        const mainModel = document.getElementById('main-model');
+        
         let localX = 0, localY = 0;
         let baseScale = 1;
         let localRotY = 0;
@@ -218,7 +174,6 @@
 
         function updateFilter() {
             activeIndex = 0;
-            resetAllVisibility();
             resetWrapperTransform();
             showActiveModel();
         }
@@ -228,18 +183,8 @@
             activeIndex += direction;
             if (activeIndex >= list.length) activeIndex = 0;
             if (activeIndex < 0) activeIndex = list.length - 1;
-            resetAllVisibility();
             resetWrapperTransform();
             showActiveModel();
-        }
-
-        function resetAllVisibility() {
-            Object.keys(menuData).forEach(cat => {
-                menuData[cat].forEach(item => {
-                    const el = document.getElementById(item.id);
-                    if (el) el.setAttribute('visible', 'false');
-                });
-            });
         }
 
         function resetWrapperTransform() {
@@ -252,14 +197,20 @@
 
         function showActiveModel() {
             const list = menuData[currentCategory];
-            const current = list[activeIndex];
+            const current = list[current.file ? activeIndex : 0];
             if (!current) return;
 
             document.getElementById('modelCounter').innerText = `${activeIndex + 1} / ${list.length}`;
 
-            // Aktif olan modeli görünür yapıyoruz 🌟
-            const activeEl = document.getElementById(current.id);
-            if (activeEl) activeEl.setAttribute('visible', 'true');
+            // A-Frame Sıfırlama ve Dinamik Enjeksiyon (Hızlı Çalışma Sağlar)
+            if (mainModel) {
+                mainModel.removeAttribute('gltf-model');
+                mainModel.setAttribute('gltf-model', `./${current.file}`);
+                mainModel.setAttribute('scale', `${current.scale} ${current.scale} ${current.scale}`);
+                mainModel.setAttribute('position', `0 ${current.posY} 0`);
+                localRotY = current.rotY;
+                mainModel.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
+            }
 
             document.getElementById('foodTitle').innerText = current.name;
             document.getElementById('foodPrice').innerText = current.price;
@@ -267,7 +218,7 @@
             document.getElementById('foodDesc').innerText = current.desc;
         }
 
-        // DOKUNMATİK EKRAN HAREKET DÖNGÜSÜ
+        // AKICI DOKUNMATİK HAREKET DÖNGÜSÜ
         window.addEventListener('touchstart', function(e) {
             if (e.touches.length === 1) {
                 isDragging = true;
@@ -281,7 +232,9 @@
         });
 
         window.addEventListener('touchmove', function(e) {
-            if (!wrapper) return;
+            if (!wrapper || !mainModel) return;
+            const list = menuData[currentCategory];
+            const current = list[activeIndex];
 
             if (e.touches.length === 1 && isDragging) {
                 let deltaX = e.touches[0].clientX - startTouchX;
@@ -309,13 +262,8 @@
                     let currentAngle = Math.atan2(e.touches[1].clientY - e.touches[0].clientY, e.touches[1].clientX - e.touches[0].clientX);
                     let angleDiff = currentAngle - startAngle;
                     
-                    const list = menuData[currentCategory];
-                    const currentModelObj = document.getElementById(list[activeIndex].id);
-                    if (currentModelObj) {
-                        let currentRot = currentModelObj.getAttribute('rotation');
-                        localRotY = currentRot.y + (angleDiff * (180 / Math.PI) * 0.5);
-                        currentModelObj.setAttribute('rotation', `${currentRot.x} ${localRotY} ${currentRot.z}`);
-                    }
+                    localRotY = localRotY + (angleDiff * (180 / Math.PI) * 0.5);
+                    mainModel.setAttribute('rotation', `${current.rotX} ${localRotY} 0`);
                     startAngle = currentAngle;
                 }
             }
