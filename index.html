@@ -14,7 +14,7 @@
     <style>
         body { margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
         
-        /* ÜST BAŞLIK VE KATEGORİ PANELİ */
+        
         .ui-header {
             position: absolute; top: 0; left: 0; width: 100%;
             background: linear-gradient(to bottom, rgba(0,0,0,0.9) 75%, rgba(0,0,0,0) 100%);
@@ -33,14 +33,14 @@
         }
         .category-btn.active { background: #e67e22; color: white; border-color: #e67e22; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.5); }
 
-        /* SEPET BUTONU */
+       
         .cart-icon-btn {
             position: absolute; top: 15px; right: 15px; background: #2ecc71; color: white;
             border: none; padding: 10px 15px; border-radius: 20px; font-weight: bold;
             z-index: 1001; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 12px;
         }
 
-        /* OK BUTONLARI */
+        
         .nav-arrow {
             position: absolute; top: 45%; transform: translateY(-50%);
             background: rgba(0, 0, 0, 0.6); color: #f1c40f; border: 2px solid rgba(255,255,255,0.2);
@@ -58,7 +58,7 @@
             font-size: 12px; font-weight: 600; z-index: 990; pointer-events: none;
         }
 
-        /* DETAY PANELİ */
+       
         .bottom-sheet {
             position: absolute; bottom: 0; left: 0; width: 100%;
             background: white; border-top-left-radius: 25px; border-top-right-radius: 25px;
@@ -73,7 +73,7 @@
         .food-description { color: #5d6d7e; font-size: 13px; line-height: 1.4; margin: 0 0 15px 0; height: 38px; overflow-y: auto; }
         .add-to-cart-btn { width: 100%; background: #2ecc71; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; }
 
-        /* ÖZEL TOAST POPUP */
+        
         .custom-toast {
             position: absolute; top: 125px; left: 50%; transform: translateX(-50%) scale(0.9);
             background: rgba(46, 204, 113, 0.95); color: white; padding: 10px 22px;
@@ -107,7 +107,7 @@
         .checkout-trigger-btn { width: 100%; background: #2ecc71; color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(46,204,113,0.3); }
         .close-cart-btn { background: #e74c3c; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; font-size: 14px; }
 
-        /* MASA SEÇİM PANELİ MODALİ */
+       
         .checkout-modal {
             position: absolute; bottom: -100%; left: 0; width: 100%; height: 100%;
             background: #f8fafc; z-index: 2500; transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -120,7 +120,7 @@
         .checkout-textarea { height: 100px; resize: none; }
         .send-order-btn { background: #e67e22; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(230,126,34,0.3); }
         
-        /* ADİSYON / MAKBUZ EKRANI */
+        
         .receipt-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #1e293b; z-index: 3000; display: none; flex-direction: column;
@@ -242,7 +242,6 @@
     </div>
 
     <script>
-        // SİZİN ENTEGRE ETTİĞİNİZ FIREBASE ENTEGRASYONU 🌟
         const firebaseConfig = {
             apiKey: "AIzaSyC2vY1s-8E4DnoHMqxONwhURVnDMUowRfs",
             authDomain: "ar-menu-cd9c2.firebaseapp.com",
@@ -257,7 +256,7 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // MENÜ VERİLERİ (Pringles Boyutu Küçültüldü 🌟)
+        
         const menuData = {
             yemekler: [
                 { file: "mustafa_-_cig_kofte.glb", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 5.5, rotX: 20, rotY: 0, posY: -0.2 },
@@ -270,7 +269,7 @@
                 // Pringles 0.05'ten 0.02 değerine düşürülerek 2.5 kat daha küçültüldü 🌟
                 { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 0.01, rotX: 5, rotY: 180, posY: -0.1 },
                 { file: "lays_kırmızı.glb", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi .", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 },
-                { file: "chips__mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Üçgen şekilli ve ekstra çıtır patates cipsi lezzeti.", scale: 1.5, rotX: 15, rotY: 0, posY: -0.1 }
+                { file: "chips__mavi.glb", name: "Doritos", price: "65 TL", cal: "490 kcal", desc: "Üçgen şekilli ve ekstra çıtır patates cipsi lezzeti.", scale: 1, rotX: 15, rotY: 0, posY: -0.1 }
             ],
             tatlılar: [
                 { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 1.6, rotX: 20, rotY: 0, posY: -0.2 },
@@ -415,7 +414,7 @@
             document.getElementById('receiptItems').innerHTML = receiptHtml;
             document.getElementById('receiptTotal').innerText = `${totalTutar} TL`;
 
-            // Bulut Veritabanı Gönderim Paketi
+          
             const siparisPaketi = {
                 masa: table,
                 tarih: today,
@@ -425,7 +424,7 @@
                 durum: "Bekliyor" // Mutfaktan onaylanabilmesi için varsayılan durum
             };
 
-            // Firebase'e Push Etme (Sessizce Arkada Gönderir) 🌟
+            
             database.ref('siparisler').push(siparisPaketi)
                 .then(() => {
                     toggleCheckoutModal(false);
@@ -439,7 +438,6 @@
 
         function restartApplication() { cart = []; updateCartUI(); document.getElementById('orderNote').value = ''; document.getElementById('receiptScreen').style.display = 'none'; }
 
-        // AR DOKUNMATİK MOTORU
         window.addEventListener('touchstart', function(e) {
             if (e.touches.length === 1) { isDragging = true; startTouchX = e.touches[0].clientX; startTouchY = e.touches[0].clientY; }
             else if (e.touches.length === 2) { isDragging = false; startPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); startAngle = Math.atan2(e.touches[1].clientY - e.touches[0].clientY, e.touches[1].clientX - e.touches[0].clientX); }
