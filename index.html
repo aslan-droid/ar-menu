@@ -25,8 +25,7 @@
             color: #f1c40f; font-size: 26px; font-weight: 800; margin: 0 0 12px 0;
             text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.6);
         }
-        .category-container { display: flex; justify-content: center; gap: 6px; width: 100%; flex-wrap: wrap; padding: 0 10px; box-sizing: border-box; display: none; } /* İlk başta gizli */
-        
+        .category-container { display: flex; justify-content: center; gap: 6px; width: 100%; flex-wrap: wrap; padding: 0 10px; box-sizing: border-box; display: none; } 
         .category-btn {
             background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 8px 12px; border-radius: 20px; font-weight: bold; color: white;
@@ -59,7 +58,7 @@
             font-size: 12px; font-weight: 600; z-index: 990; pointer-events: none; display: none;
         }
 
-        /* TARA İPUCU EKRANI */
+        /* TARA İPUCU PANELİ */
         .scan-alert {
             position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.85); color: #f1c40f; padding: 20px 30px; border-radius: 15px;
@@ -92,7 +91,7 @@
         }
         .custom-toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
 
-        /* MODAL VE SEPET */
+        /* SEPET MODAL PANELİ */
         .cart-modal {
             position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.98); z-index: 2000; transition: top 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -159,15 +158,14 @@
 
     <a-scene mindar-image="imageTargetSrc: ./menu.mind; filterMinCF:0.001; filterBeta: 0.01;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
         <a-assets></a-assets>
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        <a-entity light="type: ambient; intensity: 1.2;"></a-entity>
-        <a-entity light="type: directional; intensity: 0.8;" position="1 4 2"></a-entity>
+        
+        <a-camera position="0 0 0" look-controls="enabled: false">
+            <a-entity id="model-wrapper" position="0 -0.15 -0.6" rotation="0 0 0" scale="1 1 1" visible="false">
+                <a-gltf-model id="main-model"></a-gltf-model>
+            </a-entity>
+        </a-camera>
 
         <a-entity id="ar-target" mindar-image-target="targetIndex: 0"></a-entity>
-
-        <a-entity id="model-wrapper" position="0 -0.15 -0.8" rotation="0 0 0" scale="1 1 1" visible="false">
-            <a-gltf-model id="main-model"></a-gltf-model>
-        </a-entity>
     </a-scene>
 
     <div class="bottom-sheet">
@@ -186,10 +184,7 @@
     <div class="cart-modal" id="cartModal">
         <h2 style="margin: 0; color: #2c3e50; border-bottom: 2px solid #2ecc71; padding-bottom: 10px;">Sipariş Sepetiniz</h2>
         <div class="cart-items-list" id="cartItemsList"></div>
-        <div class="cart-total-row">
-            <span>Toplam Tutar:</span>
-            <span id="cartTotalTax">0 TL</span>
-        </div>
+        <div class="cart-total-row"><span>Toplam Tutar:</span><span id="cartTotalTax">0 TL</span></div>
         <div class="cart-action-group">
             <button class="checkout-trigger-btn" onclick="toggleCheckoutModal(true)">Siparişi Tamamla</button>
             <button class="close-cart-btn" onclick="toggleCartModal()">Kapat ve Menüye Dön</button>
@@ -201,17 +196,11 @@
         <div style="margin-top: 25px; flex: 1;">
             <div class="input-group">
                 <label class="input-label">Masa Numaranız:</label>
-                <select class="checkout-select" id="tableNumber">
-                    <option value="Masa 1">Masa 1</option>
-                    <option value="Masa 2">Masa 2</option>
-                    <option value="Masa 3">Masa 3</option>
-                    <option value="Masa 4">Masa 4</option>
-                    <option value="Masa 5">Masa 5</option>
-                </select>
+                <select class="checkout-select" id="tableNumber"><option value="Masa 1">Masa 1</option><option value="Masa 2">Masa 2</option><option value="Masa 3">Masa 3</option><option value="Masa 4">Masa 4</option><option value="Masa 5">Masa 5</option></select>
             </div>
             <div class="input-group">
                 <label class="input-label">Sipariş Notu (Opsiyonel):</label>
-                <textarea class="checkout-textarea" id="orderNote" placeholder="Örn: İçecekler soğuk gelsin, acısı az olsun..."></textarea>
+                <textarea class="checkout-textarea" id="orderNote" placeholder="Örn: İçecekler soğuk gelsin..."></textarea>
             </div>
         </div>
         <div class="cart-action-group">
@@ -221,29 +210,18 @@
     </div>
 
     <div class="receipt-screen" id="receiptScreen">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <span style="font-size: 50px;">🎉</span>
-            <h2 style="color: #2ecc71; margin: 10px 0 0 0;">Sipariş İletildi!</h2>
-            <p style="color:#94a3b8; margin: 5px 0 0 0; font-size:14px;">Mutfak paneline anlık aktarım sağlandı.</p>
-        </div>
+        <div style="text-align: center; margin-bottom: 20px;"><span style="font-size: 50px;">🎉</span><h2 style="color: #2ecc71; margin: 10px 0 0 0;">Sipariş İletildi!</h2><p style="color:#94a3b8; margin: 5px 0 0 0; font-size:14px;">Mutfak paneline anlık aktarım sağlandı.</p></div>
         <div class="receipt-card">
             <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">*** DIJITAL ADISYON ***</div>
-            <div id="receiptDate" style="font-size: 12px; margin-bottom: 10px;">Tarih: --/--/----</div>
-            <div id="receiptTable" style="font-size: 14px; font-weight: bold; margin-bottom: 10px;">Masa: --</div>
-            <div style="border-bottom: 1px dashed #333; margin-bottom: 10px;"></div>
-            <div id="receiptItems"></div>
-            <div style="border-bottom: 1px dashed #333; margin-top: 10px; margin-bottom: 10px;"></div>
-            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;">
-                <span>TOPLAM:</span>
-                <span id="receiptTotal">0 TL</span>
-            </div>
+            <div id="receiptDate" style="font-size: 12px; margin-bottom: 10px;">Tarih: --/--/----</div><div id="receiptTable" style="font-size: 14px; font-weight: bold; margin-bottom: 10px;">Masa: --</div>
+            <div style="border-bottom: 1px dashed #333; margin-bottom: 10px;"></div><div id="receiptItems"></div><div style="border-bottom: 1px dashed #333; margin-top: 10px; margin-bottom: 10px;"></div>
+            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 16px;"><span>TOPLAM:</span><span id="receiptTotal">0 TL</span></div>
             <div id="receiptNote" style="font-size: 11px; color:#555; margin-top: 15px; font-style: italic;">Not: </div>
         </div>
         <button class="checkout-trigger-btn" style="margin-top: 25px; background: #475569;" onclick="restartApplication()">Yeni Sipariş Başlat</button>
     </div>
 
     <script>
-        // FIREBASE ENTEGRASYONU 🌟
         const firebaseConfig = {
             apiKey: "AIzaSyC2vY1s-8E4DnoHMqxONwhURVnDMUowRfs",
             authDomain: "ar-menu-cd9c2.firebaseapp.com",
@@ -263,16 +241,17 @@
                 { file: "mustafa_-_cig_kofte.glb", name: "Etsiz Çiğ Köfte", price: "120 TL", cal: "310 kcal", desc: "Özel Urfa isotu ve taze yeşilliklerle yoğrulmuş geleneksel lezzet.", scale: 5.5, rotX: 20, rotY: 0, posY: -0.2 },
                 { file: "burger_and_chips.glb", name: "Gurme Burger & Patates", price: "260 TL", cal: "750 kcal", desc: "150gr dana köfte, çıtır patates kızartması ve özel sos eşliğinde.", scale: 0.08, rotX: 15, rotY: 0, posY: -0.1 },
                 { file: "pide_turkish_pizzakusbaskasar.glb", name: "Kuşbaşılı Kaşarlı Pide", price: "290 TL", cal: "680 kcal", desc: "Karadeniz usulü çıtır hamur üzerine dana kuşbaşı ve erimiş kaşar peyniri.", scale: 0.55, rotX: 70, rotY: 0, posY: -0.1 },
-                { file: "pizza.glb", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ogdfn mısır taneleriyle İtalyan usulü.", scale: 1.4, rotX: 25, rotY: 0, posY: -0.2 },
+                { file: "pizza.glb", name: "Bol Malzemeli Pizza", price: "280 TL", cal: "700 kcal", desc: "Özel pizza sosu, sucuk, salam, mantar ve mısır taneleriyle İtalyan usulü.", scale: 1.4, rotX: 25, rotY: 0, posY: -0.2 },
                 { file: "gözleme.glb", name: "Köy Usulü Gözleme", price: "140 TL", cal: "400 kcal", desc: "Sacda pişirilmiş taze el açması tereyağlı nefis gözleme.", scale: 1.5, rotX: 20, rotY: 0, posY: -0.2 }
             ],
             atıştırmalıklar: [
+                // Pringles boyutu 0.02 ye düşürülerek daha da küçültüldü 🌟
                 { file: "pringles_chips_can.glb", name: "Pringles Orijinal", price: "90 TL", cal: "520 kcal", desc: "Çıtır patates cipsi keyfi, ikonik silindir kutusunda.", scale: 0.02, rotX: 5, rotY: 180, posY: -0.1 },
                 { file: "lays_kırmızı.glb", name: "Lays Klasik", price: "65 TL", cal: "480 kcal", desc: "İncecik kesilmiş tuzlu patates cipsi partisi.", scale: 0.035, rotX: 15, rotY: 0, posY: -0.1 },
                 { file: "chips_mavi.glb", name: "Ruffles Mavi Şekilli", price: "65 TL", cal: "490 kcal", desc: "Tırtıklı ve ekstra çıtır patates cipsi lezzeti.", scale: 1.5, rotX: 15, rotY: 0, posY: -0.1 }
             ],
             tatlılar: [
-                { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ve hakiki şerbet.", scale: 1.6, rotX: 20, rotY: 0, posY: -0.2 },
+                { file: "baklava_ince_tabak.glb", name: "Gaziantep Fıstıklı Baklava", price: "280 TL", cal: "450 kcal", desc: "40 kat incecik yufka arasına bol Antep boz fıstığı ogdfn hakiki şerbet.", scale: 1.6, rotX: 20, rotY: 0, posY: -0.2 },
                 { file: "cookies.glb", name: "Çikolatalı Ev Kurabiyesi", price: "95 TL", cal: "320 kcal", desc: "Fırından yeni çıkmış, içi yumuşak parça çikolatalı kurabiyeler.", scale: 3.8, rotX: 15, rotY: 0, posY: -0.1 },
                 { file: "ice_cream.glb", name: "Meyveli İtalyan Dondurması", price: "110 TL", cal: "210 kcal", desc: "Doğal meyve özleriyle hazırlanmış serinletici el yapımı dondurma.", scale: 0.07, rotX: 10, rotY: 0, posY: -0.1 }
             ],
@@ -289,24 +268,21 @@
         let currentCategory = "yemekler";
         let activeIndex = 0;
         let cart = []; 
-        let menuLoaded = false; // Tarama kilidi takip değişkeni 🌟
+        let menuLoaded = false; 
 
         const wrapper = document.getElementById('model-wrapper');
-        const mainModel = document.getElementById('main-model');
         let localX = 0, localY = 0, baseScale = 1, localRotY = 0;
         let startTouchX, startTouchY, startPinchDist, startAngle, isDragging = false;
 
-        // BİR KEZ TARA - EKRAA KİLİTLE MOTORU ENTEGRASYONU 🌟
         window.addEventListener('DOMContentLoaded', () => {
             const arTarget = document.getElementById('ar-target');
-            
             arTarget.addEventListener('targetFound', () => {
                 if (!menuLoaded) {
-                    menuLoaded = true; // Kilit devreye girdi
+                    menuLoaded = true; 
                     document.getElementById('scanAlert').style.display = 'none';
                     document.getElementById('categoryHeader').style.display = 'flex';
                     document.querySelector('.cart-icon-btn').style.display = 'block';
-                    document.querySelector('.add-to-cart-btn').style.display = 'block';
+                    document.getElementById('addToCartBtn').style.display = 'block';
                     document.querySelectorAll('.nav-arrow').forEach(el => el.style.display = 'flex');
                     document.getElementById('modelCounter').style.display = 'block';
                     
@@ -339,7 +315,7 @@
 
         function resetWrapperTransform() {
             localX = 0; localY = 0; baseScale = 1; localRotY = 0;
-            if (wrapper) { wrapper.setAttribute('position', '0 -0.15 -0.8'); wrapper.setAttribute('scale', '1 1 1'); }
+            if (wrapper) { wrapper.setAttribute('position', '0 -0.15 -0.6'); wrapper.setAttribute('scale', '1 1 1'); }
         }
 
         function showActiveModel() {
@@ -362,6 +338,12 @@
             document.getElementById('foodPrice').innerText = current.price;
             document.getElementById('foodCal').innerText = current.cal;
             document.getElementById('foodDesc').innerText = current.desc;
+        }
+
+        function triggerToast(msg) {
+            const toast = document.getElementById('toastBar');
+            toast.innerText = msg; toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
         function addItemToCart() {
@@ -437,7 +419,7 @@
 
         function restartApplication() { cart = []; updateCartUI(); document.getElementById('orderNote').value = ''; document.getElementById('receiptScreen').style.display = 'none'; }
 
-        // AR DOKUNMATİK MOTORU
+        // AR DOKUNMATİK MOTORU (KAMERA KOORDİNATLARINA UYARLANDI 🌟)
         window.addEventListener('touchstart', function(e) {
             if(!menuLoaded) return;
             if (e.touches.length === 1) { isDragging = true; startTouchX = e.touches[0].clientX; startTouchY = e.touches[0].clientY; }
@@ -449,7 +431,7 @@
             const current = menuData[currentCategory][activeIndex];
             if (e.touches.length === 1 && isDragging) {
                 let deltaX = e.touches[0].clientX - startTouchX; let deltaY = e.touches[0].clientY - startTouchY;
-                localX += deltaX * 0.003; localY -= deltaY * 0.003; wrapper.setAttribute('position', `${localX} ${(localY - 0.15)} -0.8`);
+                localX += deltaX * 0.003; localY -= deltaY * 0.003; wrapper.setAttribute('position', `${localX} ${(localY - 0.15)} -0.6`);
                 startTouchX = e.touches[0].clientX; startTouchY = e.touches[0].clientY;
             } else if (e.touches.length === 2) {
                 if (startPinchDist) {
