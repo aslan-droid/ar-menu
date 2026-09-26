@@ -1,41 +1,30 @@
-🍔 WebAR Dijital Restoran Menüsü
+# 🍽️ WebAR Dijital Restoran Menüsü
 
-Müşterilerin restoran menüsündeki ürünleri sipariş vermeden önce masalarının üzerinde gerçek boyutlarıyla 3D (Üç Boyutlu) ve Artırılmış Gerçeklik (AR) ile inceleyebilmelerini sağlayan interaktif web uygulaması.
-
-Fiziksel menüleri dijitalleştirerek kullanıcı deneyimini (UX) üst seviyeye çıkarmayı ve sipariş karar sürecini eğlenceli hale getirmeyi amaçlamaktadır.
-
-🟢 Canlı Demo
-
-Herhangi bir uygulama indirmenize gerek yok! Telefonunuzun kamerasıyla doğrudan tarayıcı üzerinden deneyimleyebilirsiniz:
+Müşterilerin restoran menüsünü 3D modellerle (GLB formatında) kendi masalarında interaktif olarak inceleyebildiği, A-Frame ve MindAR tabanlı artırılmış gerçeklik (AR) web uygulaması.
 
 
+## ✨ Özellikler
+* **Artırılmış Gerçeklik (AR):** Özel menü kağıdı (marker) okutularak yemeklerin 3D modellerinin fiziksel ortamda görüntülenmesi.
+* **Geniş 3D Menü Yelpazesi:** Gözleme, baklava, burger, ayran ve daha birçok ürünün yüksek detaylı .glb formatındaki modelleri.
+* **Uygulamasız Kullanım:** Herhangi bir mobil uygulama indirmeye gerek kalmadan, doğrudan web tarayıcısı üzerinden kamera erişimiyle çalışma.
 
-✨ Öne Çıkan Özellikler
+## 📸 Nasıl Test Edilir?
+Bu AR deneyimini yaşamak için kameranızın hedef alacağı bir referans görseline (menü kağıdına) ihtiyacınız var.
 
-Uygulamasız AR Deneyimi: Sadece bir web linki (veya QR kod) ile doğrudan tarayıcı (Chrome, Safari vb.) üzerinden çalışır.
+1. Bilgisayarınızdan veya telefonunuzdan siteyi açın.
+2. Tarayıcının kamera erişim iznini onaylayın.
+3. Telefonunuzun kamerasını, aşağıdaki **Menü Kağıdı** görseline (veya çıktı aldıysanız fiziksel kağıda) doğru tutun.
+4. 3D yemek modellerinin menü üzerinde belirmesini izleyin!
 
-Zengin 3D Model Kütüphanesi: Türk ve dünya mutfağından özenle optimize edilmiş .glb formatında 3D varlıklar (Baklava, Gözleme, Ayran, Burger, Türk Çayı vb.).
+![Menü Kağıdı Hedef Görseli](menu-kagidi.jpeg)
 
-Etkileşimli İnceleme: Ürünleri 360 derece döndürebilme, yakınlaştırma ve uzaklaştırma imkanı.
+## 🛠️ Kullanılan Teknolojiler
+* **Frontend:** HTML, JavaScript
+* **AR & 3D Altyapısı:** A-Frame, MindAR
+* **3D Modeller:** .glb formatında optimize edilmiş varlıklar
 
-🛠️ Kullanılan Teknolojiler
-
-AR Altyapısı: A-Frame & WebXR / AR.js
-
-3D Varlık Formatı: GLTF / GLB (Web performansı için optimize edilmiştir)
-
-Frontend: HTML5, CSS3, JavaScript
-
-
-👨‍💻 Geliştiriciler İçin (Kurulum)
-
-Projeyi kendi bilgisayarınızda çalıştırmak isterseniz:
-
-Projeyi klonlayın:
-
-git clone https://github.com/aslan-droid/ar-menu.git
-
-
-Kamera erişiminin (AR özelliklerinin) düzgün çalışabilmesi için projenin HTTPS veya localhost üzerinden sunulması gerekmektedir.
-
-VS Code kullanıyorsanız Live Server eklentisi ile index.html dosyasını çalıştırarak projeyi yerel ortamınızda test edebilirsiniz.
+## 🚀 Yerelde Çalıştırma
+Projeyi kendi bilgisayarınızda test etmek isterseniz:
+1. Depoyu bilgisayarınıza klonlayın.
+2. Web kamerası erişimi gerektirdiği için dosyaları doğrudan açmak yerine bir yerel sunucu (Localhost) kullanın (Örn: VS Code Live Server eklentisi).
+3. `index.html` dosyasını çalıştırın ve kameranızı menü kağıdına yöneltin.
